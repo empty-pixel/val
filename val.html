@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Хамгийн сайхан нь ❤️</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffe6f2;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Арын дэвсгэрийн зүрхнүүд */
+        .heart-bg {
+            position: fixed; /* Safari-д илүү тогтвортой */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Энэ маш чухал: товчлуур дарахад саад болохгүй */
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            background-color: #ff69b4;
+            transform: rotate(-45deg);
+            animation: floatUp 8s infinite ease-in;
+            opacity: 0;
+        }
+
+        .heart::before, .heart::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #ff69b4;
+            border-radius: 50%;
+        }
+        .heart::before { top: -50%; left: 0; }
+        .heart::after { top: 0; left: 50%; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(-45deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-100vh) rotate(-45deg); opacity: 0; }
+        }
+
+        /* Төв хэсгийн сав */
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            text-align: center;
+            max-width: 400px;
+            width: 85%;
+            z-index: 10; /* Зүрхнүүдийн дээр харагдахын тулд */
+            position: relative;
+        }
+
+        h1 { color: #ff69b4; margin-bottom: 15px; }
+        p { line-height: 1.6; font-size: 1.05em; }
+
+        /* Оруулах хэсэг */
+        input[type="password"] {
+            padding: 12px;
+            margin: 15px 0;
+            border: 2px solid #ff99cc;
+            border-radius: 10px;
+            width: 100%;
+            box-sizing: border-box; /* Safari-д хэмжээг зөв барихад хэрэгтэй */
+            font-size: 16px; /* iPhone дээр zoom хийхээс сэргийлнэ */
+            outline: none;
+        }
+
+        button {
+            background-color: #ff69b4;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        button:hover { background-color: #e04a9b; }
+
+        img {
+            max-width: 100%;
+            border-radius: 15px;
+            margin: 20px 0;
+            display: block;
+        }
+
+        #content-section { display: none; }
+        .error-message { color: #d9534f; font-size: 0.9em; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="heart-bg" id="heart-container"></div>
+
+    <div class="container">
+        <div id="password-section">
+            <h1>Soulmate ❤️</h1>
+            <p>Үргэлжлүүлэхийн тулд нууц үгээ оруулна уу:</p>
+            <input type="password" id="passInput" placeholder="Нууц үг..." autocomplete="off">
+            <button type="button" onclick="checkPass()">Нээх</button>
+            <p id="error" class="error-message"></p>
+        </div>
+
+        <div id="content-section">
+            <h1>Happy valentine! ❤️</h1>
+            <p>Үргэлж хөөрхөн инээж баяр авчирдаг лаг хүн шүү хичээл номоо сайн хийгээд өөдрөг байгаарай </p>
+            <img src="https://picsum.photos/400/300?heart" alt="Valentine">
+            <p><b>Баяраар гуниглаж лав болохгүй шүү iii ii,</b></p>
+            <p>Mccka-д</p>
+        </div>
+    </div>
+
+    <script>
+        const PASSWORD = "220512";
+
+        function checkPass() {
+            const input = document.getElementById('passInput').value;
+            const error = document.getElementById('error');
+            
+            if (input === PASSWORD) {
+                document.getElementById('password-section').style.display = 'none';
+                document.getElementById('content-section').style.display = 'block';
+                startHearts();
+            } else {
+                error.textContent = "Нууц үг буруу байна!";
+            }
+        }
+
+        // Enter дарахад ажилладаг болгох
+        document.getElementById('passInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkPass();
+        });
+
+        function createHeart() {
+            const container = document.getElementById('heart-container');
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            
+            const size = Math.random() * 15 + 10; 
+            heart.style.width = size + 'px';
+            heart.style.height = size + 'px';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+            
+            container.appendChild(heart);
+
+            setTimeout(() => { heart.remove(); }, 8000);
+        }
+
+        function startHearts() {
+            setInterval(createHeart, 400); // Safari гацахаас сэргийлж 400ms болгов
+        }
+    </script>
+</body>
+</html>
